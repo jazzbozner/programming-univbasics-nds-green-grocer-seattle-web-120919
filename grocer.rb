@@ -2,7 +2,7 @@ def find_item_by_name_in_collection(name, collection)
   counter = 0
   
   while counter < collection.length do
-    collection[0]
+    collection[2]
     counter += 1
   end
 end
