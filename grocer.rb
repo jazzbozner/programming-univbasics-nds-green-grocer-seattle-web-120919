@@ -67,13 +67,13 @@ def apply_clearance(cart)
 end
 
 def checkout(cart, coupons)
-  # Consult README for inputs and outputs
-  #
-  # This method should call
-  # * consolidate_cart
-  # * apply_coupons
-  # * apply_clearance
-  #
-  # BEFORE it begins the work of calculating the total (or else you might have
-  # some irritated customers
+ consolidate_cart = consolidate_cart(cart)
+ coupons_cart = apply_coupons(consolidate_cart)
+ final_cart = apply_clearance(coupons_cart)
+ 
+ total = 0
+ counter = 0
+ while counter < final_cart.length
+ total += 
+ counter += 1
 end
