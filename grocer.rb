@@ -1,84 +1,101 @@
-def find_item_by_name_in_collection(name, collection)
-  counter = 0
-  while counter < collection.length do
-    if collection[counter][:item] == name
-      return collection[counter]
+require 'pry'
+
+# user passes an argument of item to see if the cart includes a specific item
+# loop through the cart in order to identify if the cart has said item
+# write a condition noting that the item is there or not
+def find_item_by_name_in_collection(product, cart)
+  saught_product = " "
+  cart.find do |items|
+    if items[:item] == product
+      saught_product = items
+    elsif !items[:item] == product
+      items[:item] = product
     end
-    counter += 1
   end
 end
 
+# create a new array cart in order to pass products in
+# view data structer and identify if there is a key:value (count and integer)
+# set a count of 1 to products
+# if there are multiple products add a count of 1
 def consolidate_cart(cart)
-  new_cart = []
-  counter = 0
-  while counter < cart.length do
-    new_cart_item = find_item_by_name_in_collection(cart[counter][:item], new_cart)
-    if new_cart_item != nil
-      new_cart_item[:count] += 1
-    else
-      new_cart_item = {
-        :item => cart[counter][:item],
-        :price => cart[counter][:price],
-        :clearance => cart[counter][:clearance],
-        :count => 1
-      }
-      new_cart << new_cart_item
+  result = [ ]
+  cart.each do |product|
+    item = find_item_by_name_in_collection(product[:item], result)
+    if !item
+      result << product
+      product[:count] = 1
+    elsif
+      item[:count] += 1
+      # binding.pry
     end
-    counter += 1
   end
-  new_cart
+  result
 end
 
+# compair both the cart and the cupons by item name
+# apply couplon arithmatic to cart item as well as
+# add new item with coupon string
 def apply_coupons(cart, coupons)
-  counter = 0
-  while counter < coupons.length do
-    cart_item = find_item_by_name_in_collection(coupons[counter][:item], cart)
-    couponed_item_name = "#{coupons[counter][:item]} W/COUPON"
-    cart_item_with_coupon = find_item_by_name_in_collection(couponed_item_name, cart)
-    if cart_item && cart_item[:count] >= coupons[counter][:num]
-      if cart_item_with_coupon
-        cart_item_with_coupon[:count] += counpons[counter][:num]
-        cart_item[:count] -= counpons[counter][:num]
-      else
-        cart_item_with_coupon = {
-          :item => couponed_item_name,
-          :price => coupons[counter][:cost] / coupons[counter][:num],
-          :count => coupons[counter][:num],
-          :clearance => cart_item[:clearance] 
-        }
-        cart << cart_item_with_coupon
-        cart_item[:count] -= coupons[counter][:num]
-      end
-    end
-    counter += 1
-  end
-  cart
+  binding.pry
+  #   cart.each do |product|
+  #   coupons.each do |discount|
+  #     if product[:item] == discount[:item]
+  #       result << product[:item] = "#{product[:item]} W/COUNPON"; product[:price] = product[]
+  #     end
+  #   end
+  # end
 end
 
-def apply_clearance(cart)
-  counter = 0
-  while counter < cart.length do
-    if cart[counter][:clearance]
-      cart[counter][:price] = (cart[counter][:price] - (cart[counter][:price] * 0.2)).round(2)
-    end
-    counter += 1
-  end
-  cart
-end
+# def apply_coupons(cart, coupons)
+#   i = 0
+#   while i < coupons.count do
+#     coupon = coupons[i]
+#     item_with_coupon = find_item_by_name_in_collection(coupon[:item], cart)
+#     item_is_in_basket = !!item_with_coupon
+#     count_is_big_enough_to_apply = item_is_in_basket && item_with_coupon[:count] >= coupon[:num]
 
-def checkout(cart, coupons)
- consolidate_cart = consolidate_cart(cart)
- counponed_cart = apply_coupons(consolidate_cart, coupons)
- final_cart = apply_clearance(counponed_cart)
- 
- total = 0
- counter = 0
- while counter < final_cart.length
- total += final_cart[counter][:price] * final_cart[counter][:count]
- counter += 1
- end
- if total > 100
-   total -= (total * 0.10)
- end
- total
-end
+#     if item_is_in_basket and count_is_big_enough_to_apply
+#       apply_coupon_to_cart(item_with_coupon, coupon, cart)
+#     end
+#     i += 1
+#   end
+
+#   cart
+# end
+
+# def apply_clearance(cart)
+#   i = 0
+#   while i < cart.length do
+#     item = cart[i]
+#     if item[:clearance]
+#       discounted_price = ((1 - CLEARANCE_ITEM_DISCOUNT_RATE) * item[:price]).round(2)
+#         item[:price] = discounted_price
+#     end
+#     i += 1
+#   end
+
+#   cart
+# end
+
+# def checkout(cart, coupons)
+#   total = 0
+#   i = 0
+
+#   ccart = consolidate_cart(cart)
+#   apply_coupons(ccart, coupons)
+#   apply_clearance(ccart)
+
+#   while i < ccart.length do
+#     total += items_total_cost(ccart[i])
+#     i += 1
+#   end
+
+#   total >= 100 ? total * (1.0 - BIG_PURCHASE_DISCOUNT_RATE) : total
+# end
+
+# # Don't forget, you can make methods to make your life easy!
+
+# def items_total_cost(i)
+#   i[:count] * i[:price]
+# end
